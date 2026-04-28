@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block head %}
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<h2 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.25rem;">
+  📊 Tableau de bord analytique
+</h2>
+<p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+  Analyse descriptive des habitudes de consommation mobile — {{ total }} réponse(s) collectée(s)
+</p>
+
+{% if total == 0 %}
+  <div class="card text-center" style="padding: 3rem;">
+    <div style="font-size: 3rem;">📭</div>
+    <p class="text-muted mt-2">Aucune donnée disponible pour le moment.</p>
+    <a href="{{ url_for('etape1') }}" class="btn btn-primary mt-3" style="margin: 1rem auto 0;">
+      Remplir le formulaire
+    </a>
+  </div>
+
+{% else %}
+
+  <!-- ── Statistiques clés ── -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">{{ stats.moy_heures }}h</div>
+      <div class="stat-label">Moy. utilisation / jour</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ "{:,}".format(stats.moy_depenses) }}</div>
+      <div class="stat-label">Moy. dépenses (FCFA)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ stats.operateur_top }}</div>
+      <div class="stat-label">Opérateur dominant</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ stats.app_top }}</div>
+      <div class="stat-label">App. la plus utilisée</div>
+    </div>
+  </div>
+
+  <!-- ── Statistiques détaillées ── -->
+  <div class="card mt-2" style="margin-bottom: 1rem;">
+    <h3 style="font-size: 0.95rem; font-weight: 600; color: var(--accent); margin-bottom: 0.75rem;">
+      🔢 Statistiques descriptives
+    </h3>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; font-size: 0.85rem;">
+      <div>
+        <div style="color: var(--muted); font-size: 0.75rem;">Médiane heures</div>
+        <div style="font-weight: 600;">{{ stats.med_heures }}h</div>
+      </div>
+      <div>
+        <div style="color: var(--muted); font-size: 0.75rem;">Écart-type heures</div>
+        <div style="font-weight: 600;">{{ stats.std_heures }}h</div>
+      </div>
+      <div>
+        <div style="color: var(--muted); font-size: 0.75rem;">Médiane dépenses</div>
+        <div style="font-weight: 600;">{{ "{:,}".format(stats.med_depenses) }} F</div>
+      </div>
+      <div>
+        <div style="color: var(--muted); font-size: 0.75rem;">Moy. streaming</div>
+        <div style="font-weight: 600;">{{ stats.moy_streaming }}h/j</div>
+      </div>
+      <div>
+        <div style="color: var(--muted); font-size: 0.75rem;">Niveau dominant</div>
+        <div style="font-weight: 600;">{{ stats.niveau_top }}</div>
+      </div>
+      <div>
+        <div style="color: var(--muted); font-size: 0.75rem;">Total réponses</div>
+        <div style="font-weight: 600;">{{ total }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Graphiques ── -->
+  <div class="charts-grid">
+    {% for chart in charts %}
+    <div class="chart-card">
+      <div id="chart{{ loop.index }}" class="chart-container"></div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <script>
+    var chartsData = {{ charts | tojson | safe }};
+    chartsData.forEach(function(chartJson, i) {
+      var fig = JSON.parse(chartJson);
+      Plotly.newPlot(
+        'chart' + (i + 1),
+        fig.data,
+        Object.assign(fig.layout, { responsive: true }),
+        { displayModeBar: false, responsive: true }
+      );
+    });
+  </script>
+
+{% endif %}
+
+{% endblock %}

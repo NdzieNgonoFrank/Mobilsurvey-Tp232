@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Étape 2 / 3{% endblock %}
+
+{% block content %}
+<div style="max-width: 480px; margin: 0 auto;">
+
+  <!-- Progression -->
+  <div class="progress-bar">
+    <div class="step-dot done">✓</div>
+    <div class="step-line" style="background: var(--accent);"></div>
+    <div class="step-dot active">2</div>
+    <div class="step-line"></div>
+    <div class="step-dot">3</div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem;">
+      📶 Opérateur &amp; Dépenses
+    </h2>
+    <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+      Étape 2 sur 3 — Informations réseau
+    </p>
+
+    {% if erreur %}
+    <div class="alert-error">⚠️ {{ erreur }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('etape2') }}">
+
+      <div class="form-group">
+        <label for="operateur">Opérateur mobile</label>
+        <select name="operateur" id="operateur" required>
+          <option value="" disabled selected>-- Choisir --</option>
+          <option value="MTN">MTN Cameroun</option>
+          <option value="Orange">Orange Cameroun</option>
+          <option value="Camtel">Camtel</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="type_forfait">Type de forfait data habituel</label>
+        <select name="type_forfait" id="type_forfait" required>
+          <option value="" disabled selected>-- Choisir --</option>
+          <option value="Journalier">Journalier</option>
+          <option value="Hebdomadaire">Hebdomadaire</option>
+          <option value="Mensuel">Mensuel</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="depenses_mensuelles">Dépenses mensuelles en data (FCFA)</label>
+        <input
+          type="number"
+          name="depenses_mensuelles"
+          id="depenses_mensuelles"
+          min="0"
+          max="100000"
+          step="100"
+          placeholder="Ex: 5000"
+          required
+        />
+      </div>
+
+      <div class="mt-3 form-actions">
+        <a href="{{ url_for('etape1') }}" class="btn btn-outline">← Retour</a>
+        <button type="submit" class="btn btn-primary">Suivant →</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}

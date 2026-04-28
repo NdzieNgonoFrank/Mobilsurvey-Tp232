@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Étape 1 / 3{% endblock %}
+
+{% block content %}
+<div style="max-width: 480px; margin: 0 auto;">
+
+  <!-- Progression -->
+  <div class="progress-bar">
+    <div class="step-dot active">1</div>
+    <div class="step-line"></div>
+    <div class="step-dot">2</div>
+    <div class="step-line"></div>
+    <div class="step-dot">3</div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem;">
+      🎓 Profil étudiant
+    </h2>
+    <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+      Étape 1 sur 3 — Informations générales
+    </p>
+
+    {% if erreur %}
+    <div class="alert-error">⚠️ {{ erreur }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('etape1') }}">
+
+      <div class="form-group">
+        <label for="niveau_etudes">Niveau d'études</label>
+        <select name="niveau_etudes" id="niveau_etudes" required>
+          <option value="" disabled selected>-- Choisir --</option>
+          <option value="L1">Licence 1 (L1)</option>
+          <option value="L2">Licence 2 (L2)</option>
+          <option value="L3">Licence 3 (L3)</option>
+          <option value="Master 1">Master 1</option>
+          <option value="Master 2">Master 2</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="appareil">Type d'appareil principal</label>
+        <select name="appareil" id="appareil" required>
+          <option value="" disabled selected>-- Choisir --</option>
+          <option value="Entrée de gamme">Entrée de gamme (moins de 100 000 FCFA)</option>
+          <option value="Milieu de gamme">Milieu de gamme (100 000 – 250 000 FCFA)</option>
+          <option value="Haut de gamme">Haut de gamme (plus de 250 000 FCFA)</option>
+        </select>
+      </div>
+
+      <div class="mt-3">
+        <button type="submit" class="btn btn-primary">
+          Suivant →
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}

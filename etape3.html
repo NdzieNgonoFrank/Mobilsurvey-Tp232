@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Étape 3 / 3{% endblock %}
+
+{% block content %}
+<div style="max-width: 480px; margin: 0 auto;">
+
+  <!-- Progression -->
+  <div class="progress-bar">
+    <div class="step-dot done">✓</div>
+    <div class="step-line" style="background: var(--accent);"></div>
+    <div class="step-dot done">✓</div>
+    <div class="step-line" style="background: var(--accent);"></div>
+    <div class="step-dot active">3</div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem;">
+      📲 Utilisation quotidienne
+    </h2>
+    <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+      Étape 3 sur 3 — Habitudes d'utilisation
+    </p>
+
+    {% if erreur %}
+    <div class="alert-error">⚠️ {{ erreur }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('etape3') }}">
+
+      <div class="form-group">
+        <label for="heures_telephone">Heures passées sur le téléphone / jour</label>
+        <input
+          type="number"
+          name="heures_telephone"
+          id="heures_telephone"
+          min="0"
+          max="24"
+          step="0.5"
+          placeholder="Ex: 4.5"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="heures_streaming">Heures de streaming vidéo / jour (YouTube, TikTok…)</label>
+        <input
+          type="number"
+          name="heures_streaming"
+          id="heures_streaming"
+          min="0"
+          max="24"
+          step="0.5"
+          placeholder="Ex: 1.5"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Applications les plus utilisées (plusieurs choix possibles)</label>
+        <div class="checkbox-grid">
+          <label class="checkbox-item">
+            <input type="checkbox" name="apps_utilisees" value="WhatsApp" />
+            WhatsApp
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="apps_utilisees" value="TikTok" />
+            TikTok
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="apps_utilisees" value="YouTube" />
+            YouTube
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="apps_utilisees" value="Facebook" />
+            Facebook
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="apps_utilisees" value="Instagram" />
+            Instagram
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="apps_utilisees" value="Telegram" />
+            Telegram
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="apps_utilisees" value="Twitter" />
+            Twitter / X
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="apps_utilisees" value="Autre" />
+            Autre
+          </label>
+        </div>
+      </div>
+
+      <div class="mt-3 form-actions">
+        <a href="{{ url_for('etape2') }}" class="btn btn-outline">← Retour</a>
+        <button type="submit" class="btn btn-primary">✅ Soumettre</button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}
